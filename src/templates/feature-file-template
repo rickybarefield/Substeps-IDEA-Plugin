@@ -1,0 +1,24 @@
+#TODO Complete this feature file
+Tags: Any-Tags Can-Go-Here They-Will-Apply-To-All-Scenarios-In-This-File
+
+Feature: The name of your feature
+
+Tags: Any-Tags Can-Go-Here They-Will-Apply-To-This-Scenario
+
+Scenario: The name of the scenario
+ Given you complete this
+ When you run it
+ Then it might pass
+
+Tags: Any-Tags Can-Go-Here They-Will-Apply-To-This-Scenario-Outline
+
+Scenario Outline: The name of a scenario outline
+ Given you complete this and have a <PARAM_1>
+ When you run it possibly with <PARAM_2>
+ Then it might pass for some of your examples
+
+Examples:
+
+ | PARAM_1 | PARAM_2 |
+ |   2     |  Fred   |
+ |   6     |  Betty  |

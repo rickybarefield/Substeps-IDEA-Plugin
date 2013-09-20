@@ -1,0 +1,49 @@
+<idea-plugin version="2">
+  <id>com.technophobia.substeps.intellij-plugin</id>
+  <name>Substeps Intellij Plugin</name>
+  <version>0.1</version>
+  <vendor email="substeps@technophobia.com" url="http://www.technophobia.com/substeps">Technophobia</vendor>
+
+  <description><![CDATA[
+          Substeps Plugin
+      ]]></description>
+
+  <change-notes><![CDATA[
+      ]]></change-notes>
+
+  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Build+Number+Ranges for description -->
+  <idea-version since-build="107.105"/>
+
+  <!-- please see http://confluence.jetbrains.net/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <application-components>
+    <!-- Add your application components here -->
+  </application-components>
+
+  <project-components>
+    <!-- Add your project components here -->
+  </project-components>
+
+  <actions>
+
+      <action id="Substeps.SubstepsFile" class="com.technophobia.substeps.intellij.NewSubstepsFileAction"
+              text="Substeps File" description="Create new Substeps File">
+          <add-to-group group-id="NewGroup" anchor="last"/>
+      </action>
+
+      <action id="Substeps.FeatureFile" class="com.technophobia.substeps.intellij.NewFeatureFileAction"
+              text="Feature File" description="Create new Substeps Feature File">
+          <add-to-group group-id="NewGroup" anchor="last"/>
+      </action>
+
+  </actions>
+
+  <extensions defaultExtensionNs="com.intellij">
+      <fileTypeFactory implementation="com.technophobia.substeps.intellij.SubstepsFileTypeLoader"/>
+      <fileTypeFactory implementation="com.technophobia.substeps.intellij.FeatureFileTypeLoader"/>
+  </extensions>
+</idea-plugin>
