@@ -4,7 +4,7 @@
     <groupId>com.technophobia.substeps</groupId>
     <artifactId>substeps-idea-plugin</artifactId>
     <version>0.0.1</version>
-    <packaging>jar</packaging>
+    <packaging>ij-plugin</packaging>
 
 
     <name>SubSteps IntelliJ IDEA plugin</name>
@@ -33,7 +33,7 @@
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <intellij-12-path>/opt/idea/</intellij-12-path>
+        <intellij-12-path>/opt/idea-IC-123.169/</intellij-12-path>
         <ij.plugin>true</ij.plugin>
     </properties>
 
@@ -53,9 +53,9 @@
     </pluginRepositories>
     <dependencies>
         <dependency>
-            <groupId>org.scala-lang</groupId>
-            <artifactId>scala-library</artifactId>
-            <version>2.10.0</version>
+          <groupId>org.scala-lang</groupId>
+          <artifactId>scala-library</artifactId>
+          <version>2.10.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -63,85 +63,6 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>idea_rt</artifactId>
-            <version>12</version>
-            <scope>system</scope>
-            <systemPath>${intellij-12-path}/lib/idea_rt.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>idea</artifactId>
-            <version>12</version>
-            <scope>system</scope>
-            <systemPath>${intellij-12-path}/lib/idea.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>bootstrap</artifactId>
-            <version>12</version>
-            <scope>system</scope>
-            <systemPath>${intellij-12-path}/lib/bootstrap.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>extensions</artifactId>
-            <version>12</version>
-            <scope>system</scope>
-            <systemPath>${intellij-12-path}/lib/extensions.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>util</artifactId>
-            <version>12</version>
-            <scope>system</scope>
-            <systemPath>${intellij-12-path}/lib/util.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>openapi</artifactId>
-            <version>12</version>
-            <scope>system</scope>
-            <systemPath>${intellij-12-path}/lib/openapi.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>trove4j</artifactId>
-            <version>12</version>
-            <scope>system</scope>
-            <systemPath>${intellij-12-path}/lib/trove4j.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>jdom</artifactId>
-            <version>12</version>
-            <scope>system</scope>
-            <systemPath>${intellij-12-path}/lib/jdom.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>log4j</artifactId>
-            <version>12</version>
-            <scope>system</scope>
-            <systemPath>${intellij-12-path}/lib/log4j.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>annotations</artifactId>
-            <version>12</version>
-            <scope>system</scope>
-            <systemPath>${intellij-12-path}/lib/annotations.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>picocontainer</artifactId>
-            <version>12</version>
-            <scope>system</scope>
-            <systemPath>${intellij-12-path}/lib/picocontainer.jar</systemPath>
-        </dependency>
-
-
     </dependencies>
  
   <build>
@@ -167,5 +88,93 @@
             </plugin>
         </plugins>
     </build>
+
+  <profiles>
+    <profile>
+      <id>outside</id>
+
+      <dependencies>
+        <dependency>
+          <groupId>com.jetbrains.intellij</groupId>
+          <artifactId>idea_rt</artifactId>
+          <version>12</version>
+          <scope>system</scope>
+          <systemPath>${intellij-12-path}/lib/idea_rt.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>com.jetbrains.intellij</groupId>
+          <artifactId>idea</artifactId>
+          <version>12</version>
+          <scope>system</scope>
+          <systemPath>${intellij-12-path}/lib/idea.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>com.jetbrains.intellij</groupId>
+          <artifactId>bootstrap</artifactId>
+          <version>12</version>
+          <scope>system</scope>
+          <systemPath>${intellij-12-path}/lib/bootstrap.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>com.jetbrains.intellij</groupId>
+          <artifactId>extensions</artifactId>
+          <version>12</version>
+          <scope>system</scope>
+          <systemPath>${intellij-12-path}/lib/extensions.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>com.jetbrains.intellij</groupId>
+          <artifactId>util</artifactId>
+          <version>12</version>
+          <scope>system</scope>
+          <systemPath>${intellij-12-path}/lib/util.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>com.jetbrains.intellij</groupId>
+          <artifactId>openapi</artifactId>
+          <version>12</version>
+          <scope>system</scope>
+          <systemPath>${intellij-12-path}/lib/openapi.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>com.jetbrains.intellij</groupId>
+          <artifactId>trove4j</artifactId>
+          <version>12</version>
+          <scope>system</scope>
+          <systemPath>${intellij-12-path}/lib/trove4j.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>com.jetbrains.intellij</groupId>
+          <artifactId>jdom</artifactId>
+          <version>12</version>
+          <scope>system</scope>
+          <systemPath>${intellij-12-path}/lib/jdom.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>com.jetbrains.intellij</groupId>
+          <artifactId>log4j</artifactId>
+          <version>12</version>
+          <scope>system</scope>
+          <systemPath>${intellij-12-path}/lib/log4j.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>com.jetbrains.intellij</groupId>
+          <artifactId>annotations</artifactId>
+          <version>12</version>
+          <scope>system</scope>
+          <systemPath>${intellij-12-path}/lib/annotations.jar</systemPath>
+        </dependency>
+        <dependency>
+          <groupId>com.jetbrains.intellij</groupId>
+          <artifactId>picocontainer</artifactId>
+          <version>12</version>
+          <scope>system</scope>
+          <systemPath>${intellij-12-path}/lib/picocontainer.jar</systemPath>
+        </dependency>
+      </dependencies>
+    </profile>
+
+
+  </profiles>
 
 </project>
