@@ -45,7 +45,7 @@
   <extensions defaultExtensionNs="com.intellij">
 
       <syntaxHighlighter key="SubstepsFeature" implementationClass="com.technophobia.substeps.intellij.syntax.FeatureFileSyntaxHighlighter"/>
-      <lang.syntaxHighlighterFactory key="Feature" implementationClass="com.technophobia.substeps.intellij.syntax.FeatureFileHighlighterFactory" />
+      <lang.syntaxHighlighterFactory key="SubstepsFeature" implementationClass="com.technophobia.substeps.intellij.syntax.FeatureFileHighlighterFactory" />
 
       <fileTypeFactory implementation="com.technophobia.substeps.intellij.filetypes.SubstepsFileTypeLoader"/>
       <fileTypeFactory implementation="com.technophobia.substeps.intellij.filetypes.FeatureFileTypeLoader"/>
