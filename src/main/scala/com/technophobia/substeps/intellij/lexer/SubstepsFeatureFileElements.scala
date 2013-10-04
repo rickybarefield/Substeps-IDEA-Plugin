@@ -8,9 +8,12 @@ import com.intellij.psi.TokenType
 
 object TextElement extends IElementType("Text", SubstepsFileType.getLanguage)
 
-object KeywordElement extends IElementType("Keyword", SubstepsFileType.getLanguage) {
+object KeywordElement extends IElementType("Keyword", SubstepsFileType.getLanguage)
 
-}
+object ParameterElement extends IElementType("Parameter", SubstepsFileType.getLanguage)
+
+object CommentElement extends IElementType("Comment", SubstepsFileType.getLanguage)
+
 
 class SubstepsFeatureFileElementFactory(featureFileLexer: FeatureFileLexer) extends Tokens {
 
@@ -24,6 +27,8 @@ class SubstepsFeatureFileElementFactory(featureFileLexer: FeatureFileLexer) exte
       case _: featureFileLexer.Keyword => KeywordElement
       case _: featureFileLexer.NewLine => TokenType.NEW_LINE_INDENT
       case _: featureFileLexer.WhiteSpace => TokenType.WHITE_SPACE
+      case _: featureFileLexer.Parameter => ParameterElement
+      case _: featureFileLexer.Comment => CommentElement
 
     }
   }
