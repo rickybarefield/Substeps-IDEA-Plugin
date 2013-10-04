@@ -1,4 +1,4 @@
-package com.technophobia.substeps.intellij
+package com.technophobia.substeps.intellij.filetypes
 
 import com.intellij.openapi.fileTypes.{FileTypeConsumer, FileTypeFactory}
 

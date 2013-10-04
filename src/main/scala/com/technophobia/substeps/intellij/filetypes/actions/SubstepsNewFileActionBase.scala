@@ -1,4 +1,4 @@
-package com.technophobia.substeps.intellij
+package com.technophobia.substeps.intellij.filetypes.actions
 
 import com.intellij.ide.actions.CreateElementActionBase
 import scala.io.Source

@@ -1,4 +1,4 @@
-package com.technophobia.substeps.intellij
+package com.technophobia.substeps.intellij.filetypes
 
 import com.intellij.openapi.fileTypes.LanguageFileType
 import javax.swing.Icon
@@ -10,7 +10,7 @@ object FeatureFileType extends LanguageFileType(new FeatureLanguage){
   final val FEATURE_ICON: Icon = IconLoader.getIcon("/icons/feature-file.gif")
 
   @NotNull def getName: String = {
-    return "Substeps Feature"
+    return "Feature"
   }
 
   @NotNull def getDescription: String = {

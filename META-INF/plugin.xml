@@ -30,12 +30,12 @@
 
   <actions>
 
-      <action id="Substeps.SubstepsFile" class="com.technophobia.substeps.intellij.NewSubstepsFileAction"
+      <action id="Substeps.SubstepsFile" class="com.technophobia.substeps.intellij.filetypes.actions.NewSubstepsFileAction"
               text="Substeps File" description="Create new Substeps File">
           <add-to-group group-id="NewGroup" anchor="last"/>
       </action>
 
-      <action id="Substeps.FeatureFile" class="com.technophobia.substeps.intellij.NewFeatureFileAction"
+      <action id="Substeps.FeatureFile" class="com.technophobia.substeps.intellij.filetypes.actions.NewFeatureFileAction"
               text="Feature File" description="Create new Substeps Feature File">
           <add-to-group group-id="NewGroup" anchor="last"/>
       </action>
@@ -43,7 +43,11 @@
   </actions>
 
   <extensions defaultExtensionNs="com.intellij">
-      <fileTypeFactory implementation="com.technophobia.substeps.intellij.SubstepsFileTypeLoader"/>
-      <fileTypeFactory implementation="com.technophobia.substeps.intellij.FeatureFileTypeLoader"/>
+
+      <syntaxHighlighter key="SubstepsFeature" implementationClass="com.technophobia.substeps.intellij.syntax.FeatureFileSyntaxHighlighter"/>
+      <lang.syntaxHighlighterFactory key="Feature" implementationClass="com.technophobia.substeps.intellij.syntax.FeatureFileHighlighterFactory" />
+
+      <fileTypeFactory implementation="com.technophobia.substeps.intellij.filetypes.SubstepsFileTypeLoader"/>
+      <fileTypeFactory implementation="com.technophobia.substeps.intellij.filetypes.FeatureFileTypeLoader"/>
   </extensions>
 </idea-plugin>
