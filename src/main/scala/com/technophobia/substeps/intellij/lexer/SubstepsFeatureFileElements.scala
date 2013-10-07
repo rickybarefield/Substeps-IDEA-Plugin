@@ -6,29 +6,36 @@ import com.technophobia.substeps.lexer.{FeatureFileLexer, SubstepsTokens}
 import scala.util.parsing.combinator.token.Tokens
 import com.intellij.psi.TokenType
 
-object TextElement extends IElementType("Text", SubstepsFileType.getLanguage)
+object FeatureFileElement extends IElementType("FeatureFile", SubstepsFileType.getLanguage)
 
-object KeywordElement extends IElementType("Keyword", SubstepsFileType.getLanguage)
+object FeatureElement extends IElementType("Parameter", SubstepsFileType.getLanguage)
+
+object TextElement extends IElementType("Text", SubstepsFileType.getLanguage)
 
 object ParameterElement extends IElementType("Parameter", SubstepsFileType.getLanguage)
 
+object ScenarioElement extends IElementType("Scenario", SubstepsFileType.getLanguage)
+
+object TagsElement extends IElementType("Tags", SubstepsFileType.getLanguage)
+
 object CommentElement extends IElementType("Comment", SubstepsFileType.getLanguage)
 
+object EolElement extends IElementType("EOL", SubstepsFileType.getLanguage)
 
 class SubstepsFeatureFileElementFactory(featureFileLexer: FeatureFileLexer) extends Tokens {
 
   def convert(token: featureFileLexer.Token) = {
 
-
-
     token match {
 
-      case _: featureFileLexer.Text => TextElement
-      case _: featureFileLexer.Keyword => KeywordElement
-      case _: featureFileLexer.NewLine => TokenType.NEW_LINE_INDENT
-      case _: featureFileLexer.WhiteSpace => TokenType.WHITE_SPACE
-      case _: featureFileLexer.Parameter => ParameterElement
-      case _: featureFileLexer.Comment => CommentElement
+      case featureFileLexer.NewLineToken => TokenType.NEW_LINE_INDENT
+      case featureFileLexer.WhiteSpaceToken => TokenType.WHITE_SPACE
+      case featureFileLexer.ScenarioToken => ScenarioElement
+      case featureFileLexer.TagsToken => TagsElement
+      case featureFileLexer.NewLineToken => EolElement
+      case _: featureFileLexer.TextToken => TextElement
+      case _: featureFileLexer.ParameterToken => ParameterElement
+      case _: featureFileLexer.CommentToken => CommentElement
 
     }
   }
