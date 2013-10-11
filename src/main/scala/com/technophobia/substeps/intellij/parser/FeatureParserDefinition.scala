@@ -14,7 +14,7 @@ class FeatureParserDefinition extends ParserDefinition {
 
   def createLexer(p1: Project) = new IntelliJFeatureFileLexer
 
-  def createParser(p1: Project) = new FeatureParser
+  def createParser(p1: Project) = new FeaturePsiParser
 
   def getFileNodeType = FEATURE_FILE
 

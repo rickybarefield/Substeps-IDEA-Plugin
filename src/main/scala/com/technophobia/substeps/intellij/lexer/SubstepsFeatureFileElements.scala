@@ -6,17 +6,19 @@ import com.technophobia.substeps.lexer.{FeatureFileLexer, SubstepsTokens}
 import scala.util.parsing.combinator.token.Tokens
 import com.intellij.psi.TokenType
 
+object ScenarioElement extends IElementType("Scneario", SubstepsFileType.getLanguage)
+
 object FeatureFileElement extends IElementType("FeatureFile", SubstepsFileType.getLanguage)
 
-object FeatureElement extends IElementType("Parameter", SubstepsFileType.getLanguage)
+object FeatureMarkerElement extends IElementType("Parameter", SubstepsFileType.getLanguage)
 
 object TextElement extends IElementType("Text", SubstepsFileType.getLanguage)
 
 object ParameterElement extends IElementType("Parameter", SubstepsFileType.getLanguage)
 
-object ScenarioElement extends IElementType("Scenario", SubstepsFileType.getLanguage)
+object ScenarioMarkerElement extends IElementType("ScenarioMarker", SubstepsFileType.getLanguage)
 
-object TagsElement extends IElementType("Tags", SubstepsFileType.getLanguage)
+object TagsMarkerElement extends IElementType("Tags", SubstepsFileType.getLanguage)
 
 object CommentElement extends IElementType("Comment", SubstepsFileType.getLanguage)
 
@@ -30,8 +32,8 @@ class SubstepsFeatureFileElementFactory(featureFileLexer: FeatureFileLexer) exte
 
       case featureFileLexer.NewLineToken => TokenType.NEW_LINE_INDENT
       case featureFileLexer.WhiteSpaceToken => TokenType.WHITE_SPACE
-      case featureFileLexer.ScenarioToken => ScenarioElement
-      case featureFileLexer.TagsToken => TagsElement
+      case featureFileLexer.ScenarioToken => ScenarioMarkerElement
+      case featureFileLexer.TagsToken => TagsMarkerElement
       case featureFileLexer.NewLineToken => EolElement
       case _: featureFileLexer.TextToken => TextElement
       case _: featureFileLexer.ParameterToken => ParameterElement
