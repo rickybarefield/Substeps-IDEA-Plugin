@@ -3,53 +3,70 @@ package com.technophobia.substeps.intellij.parser
 import com.intellij.lang.{ASTNode, PsiBuilder, PsiParser}
 import com.intellij.psi.tree.IElementType
 import com.technophobia.substeps.intellij.lexer._
-import scala.util.parsing.combinator.{Parsers, RegexParsers}
-import scala.util.parsing.combinator.Parsers.Parser
+import scala.util.parsing.combinator.Parsers
 import com.technophobia.substeps.nodes._
-import scala.util.parsing.combinator.Parsers.~
-import scala.Some
 import com.technophobia.substeps.nodes.BasicScenario
 import scala.Some
 import com.technophobia.substeps.nodes.UnresolvedSubstepUsage
 import com.technophobia.substeps.nodes.Feature
-import com.technophobia.substeps.AbstractParser
+import scala.util.parsing.input.{Position, Reader}
 
 class FeaturePsiParser extends PsiParser {
 
-
-
   def parse(root: IElementType, builder: PsiBuilder): ASTNode = {
 
-    new FeatureParser().parse(r)
+   new FeatureParser().apply(builder)
 
-   var tokenType = builder.getTokenType
-
-   while(tokenType != null) {
-
-
-
-     builder.advanceLexer()
-     tokenType = builder.getTokenType
-   }
-
-
-    builder.getTreeBuilt
+   builder.getTreeBuilt
   }
 }
 
-
 class FeatureParser extends Parsers {
 
-  class ElementParser extends Parser[IElementType] {
+  override type Elem = (IElementType, String)
+  override type Input = Reader[Elem]
 
-    def apply(in: FeatureParser.this.type#Input): FeatureParser.this.type#ParseResult[IElementType] = {
+  def apply(in: PsiBuilder) {
 
+    featureFile.apply(PsiBuilderImmutableAdapter(in))
+  }
 
+  implicit class ElementParser(tokenToMatch: IElementType) extends Parser[String] {
+
+    def apply(in: Reader[Elem]): ParseResult[String] = {
+
+      def createSuccess = {
+
+        in match {
+
+          case psiReader: PsiBuilderImmutableAdapter => {
+
+            val marker = psiReader.mark()
+            marker.done(tokenToMatch)
+            val success = Success(in.first._2, in.rest)
+            success
+          }
+          case _ => throw new RuntimeException("Wrong Reader Type")
+
+        }
+
+      }
+
+      val (token, tokenText) = in.first
+
+      token match {
+
+        case x if x == tokenToMatch => createSuccess
+        case _                      => {
+          print(s"Parsing failed at ${tokenText}, expected ${tokenToMatch}")
+          Failure(s"Expected ${tokenToMatch} but found ${token}", in)
+        }
+
+      }
     }
   }
 
-
-  private def featureFile: Parser[Feature] = opt(tagDef <~ rep1(EolElement)) ~ (featureDef <~ rep1(eol)) ~ (rep(scenario) <~ rep(eol)) ^^ {
+  private def featureFile: Parser[Feature] = opt(tagDef <~ rep1(EolElement)) ~ (featureDef <~ rep1(EolElement)) ~ (rep(scenario) <~ rep(EolElement)) ^^ {
 
     case (Some(tags) ~ featureName ~ scenarios) => Feature(featureName, tags, scenarios)
     case (None ~ featureName ~ scenarios) => Feature(featureName, Nil, scenarios)
@@ -57,19 +74,48 @@ class FeatureParser extends Parsers {
 
   private def tagDef: Parser[List[String]] = TagsMarkerElement ~> rep(tag)
 
-  private def tag: Parser[String]   = TextElement
+  private def tag: Parser[String] = TextElement
 
-  private def featureDef: Parser[String] = FeatureMarkerElement ~> rep(TextElement)
+  private def featureDef: Parser[String] = FeatureMarkerElement ~> rep(TextElement) ^^ (x => x.mkString(" "))
 
-  private def scenario: Parser[BasicScenario] = (opt(tagDef <~ eol) ~ scenarioDef <~ eol) ~ rep1sep(substepUsage, eol) <~ rep(eol) ^^ {
+  private def scenario: Parser[BasicScenario] = (opt(tagDef <~ rep1(EolElement)) ~ scenarioDef <~ rep1(EolElement)) ~ rep1sep(substepUsage, EolElement) <~ rep(EolElement) ^^ {
 
     case (Some(tags) ~ scenarioName ~ substeps) => BasicScenario(scenarioName, tags, substeps)
     case (None ~ scenarioName ~ substeps) => BasicScenario(scenarioName, Nil, substeps)
   }
 
-  def substepUsage: Parser[SubstepUsage] = """([^:\r\n])+""".r ^^ ((x) => UnresolvedSubstepUsage(x.trim))
+  def substepUsage: Parser[SubstepUsage] = rep(TextElement) ^^ ((x) => UnresolvedSubstepUsage(x.mkString(" ")))
 
-  private def scenarioDef: Parser[String] = "Scenario:" ~> opt(whiteSpace) ~> """[^\n\r]+""".r
+  private def scenarioDef: Parser[String] = ScenarioMarkerElement ~> rep(TextElement) ^^ (x => x.mkString(" "))
 
+  case class PsiBuilderImmutableAdapter(builder: PsiBuilder) extends Reader[FeatureParser.this.Elem] {
+
+    val first = (builder.getTokenType, builder.getTokenText)
+
+    val advanced = false
+
+    def mark() = builder.mark()
+
+    val pos: Position = new Position {
+
+      val column: Int = builder.getCurrentOffset
+
+      val line: Int = 0
+
+      protected val lineContents = builder.getOriginalText.toString
+    }
+
+    val atEnd: Boolean = first == null
+
+    def rest: Input = {
+
+      if(advanced) throw new RuntimeException("Builder already advanced")
+
+      builder.advanceLexer()
+
+      PsiBuilderImmutableAdapter(builder)
+    }
+
+  }
 
 }

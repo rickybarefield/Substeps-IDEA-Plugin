@@ -10,7 +10,7 @@ object ScenarioElement extends IElementType("Scneario", SubstepsFileType.getLang
 
 object FeatureFileElement extends IElementType("FeatureFile", SubstepsFileType.getLanguage)
 
-object FeatureMarkerElement extends IElementType("Parameter", SubstepsFileType.getLanguage)
+object FeatureMarkerElement extends IElementType("FeatureMarker", SubstepsFileType.getLanguage)
 
 object TextElement extends IElementType("Text", SubstepsFileType.getLanguage)
 
@@ -30,7 +30,7 @@ class SubstepsFeatureFileElementFactory(featureFileLexer: FeatureFileLexer) exte
 
     token match {
 
-      case featureFileLexer.NewLineToken => TokenType.NEW_LINE_INDENT
+      case featureFileLexer.FeatureToken => FeatureMarkerElement
       case featureFileLexer.WhiteSpaceToken => TokenType.WHITE_SPACE
       case featureFileLexer.ScenarioToken => ScenarioMarkerElement
       case featureFileLexer.TagsToken => TagsMarkerElement

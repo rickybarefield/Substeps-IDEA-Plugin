@@ -22,12 +22,14 @@ class FeatureFileSyntaxHighlighter extends SyntaxHighlighterBase {
   private final val ERROR = HighlighterColors.BAD_CHARACTER;
 
   private final val keys: Map[IElementType, TextAttributesKey] = Map(
-    KeywordElement -> KEYWORD,
+    EolElement -> NEW_LINE,
     ParameterElement -> PARAMETER,
     CommentElement -> COMMENT,
+    TagsMarkerElement -> KEYWORD,
+    ScenarioMarkerElement -> KEYWORD,
+    FeatureMarkerElement -> KEYWORD,
     TokenType.ERROR_ELEMENT -> ERROR,
     TextElement -> TEXT,
-    TokenType.NEW_LINE_INDENT -> NEW_LINE,
     TokenType.WHITE_SPACE -> WHITE_SPACE)
 
   def getHighlightingLexer: Lexer = {
