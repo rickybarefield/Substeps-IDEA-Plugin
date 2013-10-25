@@ -24,9 +24,9 @@ class FeatureParserDefinition extends ParserDefinition {
 
   def getStringLiteralElements = TokenSet.EMPTY
 
-  def createElement(p1: ASTNode): PsiElement = {
+  def createElement(node: ASTNode): PsiElement = {
 
-
+    val elementType = node.getElementType()
     null
   }
 

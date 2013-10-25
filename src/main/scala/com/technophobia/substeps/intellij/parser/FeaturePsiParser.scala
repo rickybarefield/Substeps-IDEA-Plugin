@@ -15,7 +15,11 @@ class FeaturePsiParser extends PsiParser {
 
   def parse(root: IElementType, builder: PsiBuilder): ASTNode = {
 
+   val start = builder.mark()
+
    new FeatureParser().apply(builder)
+
+   start.done(root)
 
    builder.getTreeBuilt
   }
@@ -42,8 +46,8 @@ class FeatureParser extends Parsers {
           case psiReader: PsiBuilderImmutableAdapter => {
 
             val marker = psiReader.mark()
-            marker.done(tokenToMatch)
             val success = Success(in.first._2, in.rest)
+            marker.done(tokenToMatch)
             success
           }
           case _ => throw new RuntimeException("Wrong Reader Type")
@@ -66,6 +70,27 @@ class FeatureParser extends Parsers {
     }
   }
 
+  implicit class MarkingParser(wrapped: Parser[String]) extends Parser[String] {
+
+    def apply(in: FeatureParser.this.type#Input): FeatureParser.this.type#ParseResult[String] = {
+
+      val psiBuilder = in.asInstanceOf[PsiBuilderImmutableAdapter]
+
+      val mark = psiBuilder.mark()
+
+      val result = wrapped(in)
+
+      result match {
+
+        case Success(_,_) => mark.done(FeatureNameElement)
+        case _ => mark.rollbackTo()
+
+      }
+
+      result
+    }
+  }
+
   private def featureFile: Parser[Feature] = opt(tagDef <~ rep1(EolElement)) ~ (featureDef <~ rep1(EolElement)) ~ (rep(scenario) <~ rep(EolElement)) ^^ {
 
     case (Some(tags) ~ featureName ~ scenarios) => Feature(featureName, tags, scenarios)
@@ -76,7 +101,7 @@ class FeatureParser extends Parsers {
 
   private def tag: Parser[String] = TextElement
 
-  private def featureDef: Parser[String] = FeatureMarkerElement ~> rep(TextElement) ^^ (x => x.mkString(" "))
+  private def featureDef: MarkingParser = FeatureMarkerElement ~> rep(TextElement) ^^ (x => x.mkString(" "))
 
   private def scenario: Parser[BasicScenario] = (opt(tagDef <~ rep1(EolElement)) ~ scenarioDef <~ rep1(EolElement)) ~ rep1sep(substepUsage, EolElement) <~ rep(EolElement) ^^ {
 

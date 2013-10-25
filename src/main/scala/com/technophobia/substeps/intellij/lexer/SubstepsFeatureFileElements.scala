@@ -24,6 +24,10 @@ object CommentElement extends IElementType("Comment", SubstepsFileType.getLangua
 
 object EolElement extends IElementType("EOL", SubstepsFileType.getLanguage)
 
+//Non Lexer
+
+object FeatureNameElement extends IElementType("FeatureName", SubstepsFileType.getLanguage)
+
 class SubstepsFeatureFileElementFactory(featureFileLexer: FeatureFileLexer) extends Tokens {
 
   def convert(token: featureFileLexer.Token) = {
